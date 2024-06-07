@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>To Do Web Application</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link th:href="@{/style.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand navbar-text text-white">To-Do List Application</a>
+    <a class="navbar-brand navbar-text text-white" th:href="@{/api/index}" id="home">Home</a>
+    <a class="navbar-brand navbar-text text-white" th:href="@{/api/create}" id="create">New task</a>
+    <a sec:authorize="!isAuthenticated()" class="navoption" th:href="@{/login}">Login</a>
+    <a sec:authorize="isAuthenticated()" class="navoption" th:href="@{/logout}">Logout</a>
+
+</nav>
+<div class="table-responsive container d-flex align-items-center">
+
+<table class="table table-striped table-bordered table-hover">
+
+    <thead class="thead-dark">
+    <tr>
+        <th>Task description</th>
+        <th>Is completed</th>
+        <th>Delete and Modify</th>
+        <th>Add subtasks and notes</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item: ${ToDoModels}" scope="row">
+        <td th:text="${item.title}">task_title</td>
+        <td>
+            <span th:if="${item.done}" class="check">&#x2714;</span>
+            <span th:if="${not item.done}" class="cross">&#x2718;</span>
+        </td>
+        <td>
+            <a th:href="@{/api/delete/{id}(id=${item.id})}"><i class="ri-delete-bin-line"></i></a>
+            <a th:href="@{/api/modify/{id}(id=${item.id})}"><i class="ri-pencil-line"></i></a>
+        </td>
+        <td>
+            <a th:href="@{/api/subtasks/{id}(id=${item.id})}"><i class="ri-task-line"></i></a>
+            <a th:href="@{/api/notes/{id}(id=${item.id})}"><i class="ri-sticky-note-line"></i></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

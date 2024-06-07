@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>To Do Web Application - Subtasks</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link th:href="@{/style.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand navbar-text text-white">To-Do List Application</a>
+    <a class="navbar-brand navbar-text text-white" th:href="@{/api/index}" id="home">Home</a>
+    <a sec:authorize="!isAuthenticated()" class="navoption" th:href="@{/login}">Login</a>
+    <a sec:authorize="isAuthenticated()" class="navoption" th:href="@{/logout}">Logout</a>
+
+
+</nav>
+
+<div class="container">
+    <h2 th:text="${'Subtasks for Task ID: ' + taskId}"></h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Done</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="subTask : ${subTasks}">
+            <td th:text="${subTask.title}"></td>
+            <td th:text="${subTask.done} ? 'Yes' : 'No'"></td>
+            <td>
+                <a th:href="@{/api/subtasks/{taskId}/edit/{subTaskId}(taskId=${taskId}, subTaskId=${subTask.id})}">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                </a>
+                <a th:href="@{/api/subtasks/{taskId}/remove/{subTaskId}(taskId=${taskId}, subTaskId=${subTask.id})}">
+                    <button type="button" class="btn btn-danger">Remove</button>
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <form th:action="@{/api/subtasks/{taskId}(taskId=${taskId})}" method="post">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="done" name="done">
+            <label class="form-check-label" for="done">Done</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Subtask</button>
+    </form>
+</div>
+
+</body>
+</html>

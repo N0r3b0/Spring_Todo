@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>To Do Web Application - Edit Note</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link th:href="@{/style.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet"></head></head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand navbar-text text-white">To-Do List Application</a>
+    <a class="navbar-brand navbar-text text-white" th:href="@{/api/index}" id="home">Home</a>
+    <a class="navbar-brand navbar-text text-white" th:href="@{/api/notes/{id}(id=${taskId})}" id="create">Notes</a>
+    <a sec:authorize="!isAuthenticated()" class="navoption" th:href="@{/login}">Login</a>
+    <a sec:authorize="isAuthenticated()" class="navoption" th:href="@{/logout}">Logout</a>
+
+</nav>
+
+<div class="container">
+    <h2>Edit Note</h2>
+    <form th:action="@{/api/notes/{taskId}/edit/{noteId}(taskId=${taskId}, noteId=${note.id})}" method="post">
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <input type="text" class="form-control" id="content" name="content" th:value="${note.content}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Note</button>
+    </form>
+</div>
+</body>
+</html>
